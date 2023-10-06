@@ -13,7 +13,19 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        // $posts = Post::select('title','user_id')->with(['user'=>function($q){
+        //     $q->select('name','id')->withCount('posts');
+        // }])->withCount('comments')->get();
+
+        // $posts = Post::with('user.posts','comments')->count();
+
+        $posts = Post::whereHas('comments')->get();
+        // dd($posts);
+        // $posts = Post::where('id','>',600)->get();
+
+        return response()->json($posts, 200);
+
+        // return view('posts.index', compact('posts'));
     }
 
     /**
