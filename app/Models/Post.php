@@ -9,6 +9,7 @@ class Post extends Model
 {
     use HasFactory;
 
+    // modcon
     public $timestamps = true;
 
     protected $table = 'posts';
@@ -19,4 +20,15 @@ class Post extends Model
 
     protected $guarded = ['id'];
 
+    // Relhasm
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'post_id', 'id');
+    }
+
+    // Relbelo
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }

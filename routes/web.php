@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-DB::listen(function ($event) {
-    dump($event->sql);
-});
+// DB::listen(function ($event) {
+//     dump($event->sql);
+// });
 
 Route::get('/', function () {
     return view('welcome');
