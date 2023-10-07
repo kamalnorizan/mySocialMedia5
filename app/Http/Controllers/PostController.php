@@ -13,13 +13,13 @@ class PostController extends Controller
      */
     public function index()
     {
-        // $posts = Post::select('title','user_id')->with(['user'=>function($q){
-        //     $q->select('name','id')->withCount('posts');
-        // }])->withCount('comments')->get();
+        $posts = Post::select('id','title','user_id')->with(['user'=>function($q){
+            $q->select('name','id')->withCount('posts');
+        }])->withCount('comments')->latest()->get();
 
         // $posts = Post::with('user.posts','comments')->count();
 
-        $posts = Post::whereHas('comments')->get();
+        // $posts = Post::whereHas('comments')->get();
         // dd($posts);
         // $posts = Post::where('id','>',600)->get();
 
@@ -41,7 +41,13 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        //
+        $post = new Post;
+        $post->title = $request->title;
+        $post->user_id = auth()->user()->id;
+        $post->content = $request->content;
+        $post->save();
+
+        return redirect()->route('posts.index');
     }
 
     /**
@@ -57,7 +63,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        return view('posts.create', compact('post'));
     }
 
     /**
@@ -65,7 +71,13 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, Post $post)
     {
-        //
+
+        $post->title = $request->title;
+        $post->user_id = auth()->user()->id;
+        $post->content = $request->content;
+        $post->save();
+
+        return redirect()->route('posts.index');
     }
 
     /**
