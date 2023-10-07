@@ -13,7 +13,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::select('id','title','user_id')->with(['user'=>function($q){
+        $posts = Post::select('id','title', 'content','user_id')->with(['user'=>function($q){
             $q->select('name','id')->withCount('posts');
         }])->withCount('comments')->latest()->get();
 
@@ -23,9 +23,9 @@ class PostController extends Controller
         // dd($posts);
         // $posts = Post::where('id','>',600)->get();
 
-        return response()->json($posts, 200);
+        // return response()->json($posts, 200);
 
-        // return view('posts.index', compact('posts'));
+        return view('posts.index', compact('posts'));
     }
 
     /**
@@ -85,6 +85,8 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $post->delete();
+
+        return redirect()->route('posts.index');
     }
 }
